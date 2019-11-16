@@ -27,7 +27,7 @@ $ npm login --registry=https://npm.pkg.github.com
 
 使用GITHUB\_TOKEN进行身份验证 如果您正在使用GitHub Actions工作流，您可以使用GITHUB\_TOKEN在Github Packages中发布和使用包，而不需要存储和管理个人访问令牌。有关更多信息，请参见“使用GITHUB\_TOKEN进行身份验证”。
 
-### 发布包
+## 发布包
 
 默认情况下，GitHub Packages会在GitHub 仓库中发布一个包，您可以在
 package.json文件的名称字段中指定该包。例如，您可以将一个名为
@@ -43,7 +43,19 @@ package.json文件的名称字段中指定该包。例如，您可以将一个�
 
 发布包后，您可以在GitHub上查看该包。有关更多信息，请参见“查看存储库的包”
 
-使用本地`.npmrc`文件发布包
+### 使用本地`.npmrc`文件发布包
 
-你可以用`.npmrc`文件来配置项目的作用域映射。在`.npmrc`文件中，使用GitHub包的网址和帐户所有者，这样GitHub包就知道将包请求路由到哪里。使用`.npmrc`文件防止其他开发人员意外地将包发布到`npmjs.org`，而不是GitHub Packages。因为不支持大写字母，所以即使GitHub用户或组织名称包含大写字母，存储库所有者也必须使用小写字母。
+你可以用`.npmrc`文件来配置项目的作用域映射。在`.npmrc`文件中，使用GitHub包的网址和帐户所有者，这样GitHub包就知道将包请求路由到哪里。使用`.npmrc`文件防止其他开发人员意外地将包发布到`npmjs.org`，而不是GitHub Packages。因为不支持大写字母，所以即使GitHub用户或组织名称包含大写字母，仓库所有者也必须使用小写字母。
 
+1. 向GitHub包进行身份验证。有关更多信息，请参见“向GitHub Packages进行身份验证”
+2. 在与 `package.json` 文件相同的目录中，创建或编辑 `.npmrc` 文件，添加一行指定 GitHub Packages 的URL和帐户所有者。用拥有包含项目的仓库的用户或组织帐户的名称替换OWNER。
+```
+registry=https://npm.pkg.github.com/OWNER
+```
+3. 把`.npmrc`文件添加到GitHub Packages可以找到您的项目的仓库中。有关更多信息，请参见“使用命令行将文件添加到仓库中”
+4. 请在项目包中验证包的名称。名称字段必须包含包的作用域和名称。例如，如果您的包被称为“test”，并且您正在发布到 `my-org` GitHub组织，则包中的名称字段应为`@my-org/test`。
+4. 请验证项目包中的`repostiroy`字段。`repository`字段必须与GitHub 仓库的URL匹配。例如，如果您的仓库URL是`github.com/my-org/test`，那么`repository`字段应该是`git://github.com/my-org/test.git`。
+5. 发布
+```
+$npm publish
+```
