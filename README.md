@@ -45,7 +45,7 @@ $ npm login --registry=https://npm.pkg.github.com
 
 ### 使用本地`.npmrc`文件发布包
 
-你可以用`.npmrc`文件来配置项目的作用域映射。在`.npmrc`文件中，使用Github Packages的网址和帐户所有者，这样Github Packages就知道将包请求路由到哪里。使用`.npmrc`文件防止其他开发人员意外地将包发布到`npmjs.org`，而不是GitHub Packages。因为不支持大写字母，所以即使GitHub用户或组织名称包含大写字母，仓库所有者也必须使用小写字母。
+你可以用`.npmrc`文件来配置项目的作用域映射。在`.npmrc`文件中，使用Github Packages的URL和帐户所有者，这样Github Packages就知道将包请求路由到哪里。使用`.npmrc`文件防止其他开发人员意外地将包发布到`npmjs.org`，而不是GitHub Packages。因为不支持大写字母，所以即使GitHub用户或组织名称包含大写字母，仓库所有者也必须使用小写字母。
 
 1. 向GitHub Packages进行身份验证。更多信息请参见“向GitHub Packages进行身份验证”
 2. 在与 `package.json` 文件相同的目录中，创建或编辑 `.npmrc` 文件，添加一行指定 GitHub Packages 的URL和帐户所有者。用拥有包含项目的仓库的用户或组织帐户的名称替换OWNER。
@@ -60,7 +60,7 @@ registry=https://npm.pkg.github.com/OWNER
 $npm publish
 ```
 
-### 在`package.json`文件中使用publishConfig发布包
+### 在`package.json`文件中使用`publishConfig`发布包
 
 您可以在`package.json`文件中使用publishConfig元素来指定要在其中发布包的注册表。有关更多信息，请参见npm文档中的“发布配置”。
 
@@ -74,4 +74,52 @@ $npm publish
 3. 发布包:
 ```
 $ npm publish
+```
+
+### 将多个包发布到同一个仓库中
+要将多个包发布到同一个仓库中，可以在每个包的 `package.json` 文件的 `repository` 字段中包含GitHub仓库的URL。GitHub包将基于该字段匹配仓库，而不是基于包名。如果将 `package.json` 文件存储在仓库的根目录之外，可以使用 `directory` 字段指定GitHub包可以找到 `package.json` 文件的位置。
+
+```
+"repository" : {
+    "type" : "git",
+    "url": "ssh://git@github.com/OWNER/REPOSITORY.git",
+    "directory": "packages/name"
+  },
+```
+
+## 安装包
+
+安装软件包
+您可以通过将软件包作为依赖项添加到项目的软件 `package.json` 文件中，从GitHub软件包安装软件包。有关在项目中使用包的更多信息，请参见npm文档中的“使用包”。
+
+默认情况下，您可以添加来自一个组织的包。有关更多信息，请参见安装其他组织的软件包
+
+您还需要添加 `.npmrc` 文件，这样所有安装包的请求都将通过GitHub包。当您通过GitHub包路由所有包请求时，您可以同时使用来自npmjs.com的有作用域包和无作用域包。有关更多信息，请参见npm文档中的“npm作用域”。
+
+向GitHub包进行身份验证。有关更多信息，请参见“向GitHub包进行身份验证”
+
+在与 `package.json` 文件相同的目录中，创建或编辑 `.npmrc` 文件中包含一行指定GitHub包的网址和帐户所有者。用拥有包含项目的仓库的用户或组织帐户的名称替换OWNER。
+```conf
+registry=https://pkg.npm.github.com/OWNER
+```
+添加 `.npmrc` 文件放到GitHub包可以找到您的项目的仓库中。有关更多信息，请参见“使用命令行将文件添加到仓库中”
+
+在项目中配置 `package.json` 以使用正在安装的包。要将包依赖项添加到GitHub包的 `package.json` 文件中，请指定完整作用域的包名，如`@my-org/server`。对于来自npmjs.com的包，请指定全名，例如`@babel/core`或`@lodash`。例如，下面这个包。json使用`@octo-org/octo-app`包作为依赖项。
+
+```json
+{
+  "name": "@my-org/server",
+  "version": "1.0.0",
+  "description": "Server app that uses the @octo-org/octo-app package",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@octo-org/octo-app": "1.0.0"
+  }
+}
+```
+5. 安装软件包。
+```
+$ npm install
 ```
