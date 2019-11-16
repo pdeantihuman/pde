@@ -8,4 +8,5 @@
 ## Linux
 
 * [Linux 块设备](linux/block-layer.md)
+* [Linux 内存管理](linux/mem_management.md)
 
