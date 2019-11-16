@@ -94,6 +94,71 @@ static inline void put_bh(struct buffer_head *bh) {
 
 缓冲头的第二个问题是它们只描述了一个缓冲区。当用作所有 I/O 操作的容器时，缓冲头迫使内核将潜在的大块 I/O 操作(比如写操作)分解成多个缓冲头结构。
 
+这导致不必要的开销和空间消耗。因此，2.5开发内核的主要目标是为块 IO 操作引入一个新的、灵活的、轻量级的容器。结果是BIO结构，这将在下一节讨论。
+
+## BIO 结构
+
+内核中块 I/O 的基本容器是在`<linux/bio.h>`中定义的bio结构。该结构将正在运行(活动)的块 I/O 操作表示为段列表。段是内存中连续的缓冲区块。因此，单个缓冲区不需要在内存中是连续的。通过允许以块的形式描述缓冲区，bio结构为内核提供了从存储器的多个位置对甚至单个缓冲区进行逐块 I/O 操作的能力。像这样的矢量 IO 称为分散-聚集 IO 
+
+以下是在`<linux/bio.h>`中定义的结构bio，为每个字段添加了注释:
+
+```cpp
+struct bio { 
+    sector_t bi_sector;
+    struct bio *bi_next;
+    struct block_device *bi_bdev;
+    unsigned long bi_flags;
+    unsigned long bi_rw;
+    unsigned short bi_vcnt;
+    unsigned short bi_idx;
+    unsigned short bi_phys_segments;
+    unsigned int bi_size;
+    unsigned int bi_seg_front_size;
+    unsigned int bi_seg_back_size;
+    unsigned int bi_max_vecs; 
+    unsigned int bi_comp_cpu; 
+    atomic_t bi_cnt; 
+    struct bio_vec *bi_io_vec; 
+    bio_end_io_t *bi_end_io; 
+    void *bi_private; 
+    bio_destructor_t *bi_destructor; 
+    struct bio_vec bi_inline_vecs[0];
+};
+```
+
+bio结构的主要目的是表示飞行中的块 IO 操作。为此，该结构中的大多数字段都与内务管理相关。最重要的字段是`bi_io_vec`、`bi_vcnt`和`bi_idx`。图14.2显示了bio结构与其朋友之间的关系。
+
+## I/O 向量
+
+bi_io_vec场指向一组bio_vec结构。在这个特定的块 IO 操作中，这些结构被用作单个段的列表。每个bio_vec都被视为`<page，offset，len>`形式的向量，它描述了一个特定的段:它所在的物理页、块在页中作为偏移量的位置以及从给定偏移量开始的块的长度。这些向量的完整数组描述了整个缓冲区。生物矢量结构在 `<linux/bio.h>` 中定义:
+
+```cpp
+struct bio_vec {
+    /* pointer to the physical page on which this buffer resides */ 
+    struct page *bv_page;
+    /* the length in bytes of this buffer */ 
+    unsigned int bv_len;
+    unsigned int bv_offset; /* the byte offset within the page where the buffer resides */ 
+};
+```
+
+在每个给定的块 I/O 操作中，在生物矢量阵列中有从生物矢量开始的双矢量。当执行块 I/O 操作时，bi_idx字段用于指向数组中的当前索引。
+
+总之，每个块 IO 请求都由一个 bio 结构表示。每个请求由一个或多个存储在bio_vec结构阵列中的块组成。这些结构充当向量，描述每个段在内存物理页面中的位置。 I/O 操作中的第一段由b_io_vec指向。对于列表中的`bi_vcnt`段总数，每个附加段紧跟在第一个之后。当块 I/O 层提交请求中的段时，`bi_idx`字段被更新以指向当前段。
+
+`bi_idx`字段用于指向列表中的当前bio_vec，这有助于块 I/O 层跟踪部分完成的块 I/O 操作。然而，更重要的用途是允许 bio 结构的分裂。利用此功能，实现廉价磁盘冗余阵列(磁盘阵列，一种硬盘设置，可使单个卷为了性能和可靠性而跨越多个磁盘)的驱动程序可以采用单个 bio 结构，最初是为单个设备设计的，并将其在磁盘阵列中的多个硬盘驱动器中进行分割。所有的磁盘阵列驱动程序需要做的就是复制io结构，并更新`bi_idx`字段，以指向单个驱动器应该开始其操作的位置。
+
+ bio 结构在`bi_cnt`字段中保持使用计数。当该字段达到零时，结构被破坏，后备存储器被释放。以下两个功能为您管理使用计数器。
+
+```cpp
+void bio_get(struct bio *bio);
+void bio_put(struct bio *bio);
+```
+
+前者增加使用计数，而后者减少使用计数(如果计数为零，则破坏 bio 结构)。在操纵飞行中的 bio 结构之前，一定要增加它的使用次数，以确保它不会完成并从你下面释放出来。完成后，依次减少使用次数。
+
+最后，`bi_private`字段是结构所有者(即创建者)的私有字段。通常，只有分配了 bio 结构，才能读写该字段。
+
 ## Linus 电梯
 
 现在让我们来看看一些现实生活中的 IO 调度器。第一个 IO 调度器叫做Linus电梯。\(是的，Linus有一部以他命名的电梯！\)它是2.4中的默认 I/O 调度程序。在2.6版本中，它被下面的 I/O 调度器所取代，我们将一直关注它，因为这台电梯比后面的那些更简单，同时执行许多相同的功能，它是一个很好的介绍。
