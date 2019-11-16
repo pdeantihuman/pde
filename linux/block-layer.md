@@ -95,7 +95,7 @@ static inline void put_bh(struct buffer_head *bh) {
 
 ## BIO 结构
 
-内核中块 I/O 的基本容器是在`<linux/bio.h>`中定义的bio结构。该结构将正在运行\(活动\)的块 I/O 操作表示为段列表。段是内存中连续的缓冲区块。因此，单个缓冲区不需要在内存中是连续的。通过允许以块的形式描述缓冲区，bio结构为内核提供了从存储器的多个位置对甚至单个缓冲区进行逐块 I/O 操作的能力。像这样的矢量 IO 称为分散-聚集 IO (scatter-gather I/O)。
+内核中块 I/O 的基本容器是在`<linux/bio.h>`中定义的bio结构。该结构将正在运行\(活动\)的块 I/O 操作表示为段列表。段是内存中连续的缓冲区块。因此，单个缓冲区不需要在内存中是连续的。通过允许以块的形式描述缓冲区，bio结构为内核提供了从存储器的多个位置对甚至单个缓冲区进行逐块 I/O 操作的能力。像这样的矢量 IO 称为分散-聚集 IO \(scatter-gather I/O\)。
 
 以下是在`<linux/bio.h>`中定义的结构bio，为每个字段添加了注释:
 
@@ -127,15 +127,16 @@ bio结构的主要目的是表示飞行中的块 IO 操作。为此，该结构�
 
 ## I/O 向量
 
-bi\_io\_vec场指向一组bio\_vec结构。在这个特定的块 IO 操作中，这些结构被用作单个段的列表。每个bio\_vec都被视为`<page，offset，len>`形式的向量，它描述了一个特定的段:它所在的物理页、块在页中作为偏移量的位置以及从给定偏移量开始的块的长度。这些向量的完整数组描述了整个缓冲区。生物矢量结构在 `<linux/bio.h>` 中定义:
+bi\_io\_vec字段指向一组bio\_vec结构。在这个特定的块 IO 操作中，这些结构被用作单个段的列表。每个bio\_vec都被视为`<page，offset，len>`形式的向量，它描述了一个特定的段:它所在的物理页、块在页中作为偏移量的位置以及从给定偏移量开始的块的长度。这些向量的完整数组描述了整个缓冲区。`bio_vec` 结构在 `<linux/bio.h>` 中定义:
 
 ```cpp
 struct bio_vec {
-    /* pointer to the physical page on which this buffer resides */ 
+    // 指向该缓冲区所在的物理页面的指针
     struct page *bv_page;
-    /* the length in bytes of this buffer */ 
+    // 这个缓冲区的字节长度
     unsigned int bv_len;
-    unsigned int bv_offset; /* the byte offset within the page where the buffer resides */ 
+    // 缓冲区所在页面内的字节偏移量
+    unsigned int bv_offset;  
 };
 ```
 
