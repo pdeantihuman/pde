@@ -29,13 +29,21 @@ $ npm login --registry=https://npm.pkg.github.com
 
 ### 发布包
 
-默认情况下，GitHub包会在GitHub存储库中发布一个包，您可以在package.json文件的名称字段中指定该包。例如，您可以将一个名为@my-org/test的包发布到my-org/test GitHub仓库中。您可以通过在package.json文件中包含描述字段来为包列表页面添加摘要。有关更多信息，请参见npm文档中的“使用软件包”和“如何创建节点模块”。
+默认情况下，GitHub Packages会在GitHub 仓库中发布一个包，您可以在
+package.json文件的名称字段中指定该包。例如，您可以将一个名为
+`@my-org/test`的包发布到`my-org/test`的GitHub仓库中。您可以通过在package.json文件中包含描述字段来为包列表页面添加摘要。有关更多信
+息，请参见npm文档中的“使用软件包”和“如何创建节点模块”。
 
-通过在package.json文件中包含一个网址字段，可以将多个包发布到同一个GitHub仓库中。有关更多信息，请参见“将多个包发布到同一个仓库”
+通过在package.json文件中包含一个`URL`字段，可以将多个包发布到同一个GitHub仓库中。有关更多信息，请参见“将多个包发布到同一个仓库”
 
-您可以使用本地。或者在包中使用publishConfig选项。作用域包的名称格式为@owner/name。作用域包总是以@符号开头。您可能需要更新包中的名称，json才能使用作用域名称。例如，“名称”:@codertocat/hello-world-npm。
+如果要设置作用域映射的话，用本地项目中的 `.npmrc` 文件或者 
+`package.json` 中的 `publishConfig` 选项来配置都是可以的。作用
+域包的名称格式为`@owner/name`。作用域包总是以`@`符号开头。您可能需要新
+包中的名称，json才能使用作用域名称。例如，`name: "@codertocat/hello-world-npm"`
 
 发布包后，您可以在GitHub上查看该包。有关更多信息，请参见“查看存储库的包”
 
-使用本地发布包。npmrc文件 你可以用。npmrc文件来配置项目的范围映射。在……npmrc文件中，使用GitHub包的网址和帐户所有者，这样GitHub包就知道将包请求路由到哪里。使用。npmrc文件防止其他开发人员意外地将包发布到npmjs.org，而不是GitHub包。因为不支持大写字母，所以即使GitHub用户或组织名称包含大写字母，存储库所有者也必须使用小写字母。
+使用本地`.npmrc`文件发布包
+
+你可以用`.npmrc`文件来配置项目的作用域映射。在`.npmrc`文件中，使用GitHub包的网址和帐户所有者，这样GitHub包就知道将包请求路由到哪里。使用`.npmrc`文件防止其他开发人员意外地将包发布到`npmjs.org`，而不是GitHub Packages。因为不支持大写字母，所以即使GitHub用户或组织名称包含大写字母，存储库所有者也必须使用小写字母。
 
