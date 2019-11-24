@@ -25,3 +25,7 @@
 - [go-ticker.md](go/go-ticker.md) 
 
 - [freelist.md](go/freelist.md) 
+
+## 算法
+
+-  [algorithms.md](go\algorithms.md) 
