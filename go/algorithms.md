@@ -1,6 +1,22 @@
 # 算法题
 
-## LC33
+[TOC]
+
+
+
+## 数字第一次出现的位置
+
+先快排，再二分查找（变形）
+
+## 开平方根
+
+Magic Number
+
+## 跳马问题
+
+
+
+## LC33 搜索旋转排序数组
 
 ```go
 func bsearch(nums []int, v int, left int, right int) int {
@@ -54,7 +70,7 @@ func findTurnIndex(nums []int) int {
 }
 ```
 
-## LC93
+## LC93 恢复ip地址
 
 ```go
 func restoreIpAddresses(s string) (ans []string) {
@@ -115,7 +131,7 @@ func valid(s string) bool {
 
 
 
-## LC105
+## LC105 重建二叉树
 
 ```go
 // 由前序遍历preorder的第一个节点即为根节点
@@ -152,44 +168,9 @@ func buildTreeHelper(pre []int, preStart, preEnd, inStart int, inPos map[int]int
 }
 ```
 
-## LC209
-
-```go
-// 滑动窗口 时间复杂度: O(n) 空间复杂度: O(1)
-func minSubArrayLen4(s int, nums []int) int {
-  l, r := 0, -1        //nums[l...r]为我们的滑动窗口,如果[0,0]就包含了第一个元素,初始不包含任何元素
-  sum := 0             // 合初始设置为0
-  res := len(nums) + 1 // 最短数组长度设置为整个数组长度+1,设置为最大值
-
-  for l < len(nums) { // 窗口的左边界在数组范围内,则循环继续
-    if r+1 < len(nums) && sum < s {
-      r++            // 窗口右边界扩大
-      sum += nums[r] // 计算sum值
-    } else { // r已经到头,或者sum>=s
-      sum -= nums[l]
-      l++ // 窗口左边界缩小
-    }
-    if sum >= s {
-      res = min(res, r-l+1)
-    }
-  }
-  if res == len(nums)+1 {
-    return 0
-  }
-  return res
-}
-
-func min(a, b int) int {
-  if a < b {
-    return a
-  }
-  return b
-}
-```
 
 
-
-## LC106
+## LC106 重建二叉树
 
 ```go
 /**
@@ -228,7 +209,44 @@ func findIndex(array []int, num int) int {
 }
 ```
 
-## LC215
+## LC209 求和大于s的最小数组长度
+
+```go
+// 滑动窗口 时间复杂度: O(n) 空间复杂度: O(1)
+func minSubArrayLen4(s int, nums []int) int {
+  l, r := 0, -1        //nums[l...r]为我们的滑动窗口,如果[0,0]就包含了第一个元素,初始不包含任何元素
+  sum := 0             // 合初始设置为0
+  res := len(nums) + 1 // 最短数组长度设置为整个数组长度+1,设置为最大值
+
+  for l < len(nums) { // 窗口的左边界在数组范围内,则循环继续
+    if r+1 < len(nums) && sum < s {
+      r++            // 窗口右边界扩大
+      sum += nums[r] // 计算sum值
+    } else { // r已经到头,或者sum>=s
+      sum -= nums[l]
+      l++ // 窗口左边界缩小
+    }
+    if sum >= s {
+      res = min(res, r-l+1)
+    }
+  }
+  if res == len(nums)+1 {
+    return 0
+  }
+  return res
+}
+
+func min(a, b int) int {
+  if a < b {
+    return a
+  }
+  return b
+}
+```
+
+
+
+## LC215 第k大的数
 
 ```go
 // Using Min Heap to store the k largest elements
