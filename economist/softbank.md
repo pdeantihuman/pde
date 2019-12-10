@@ -10,12 +10,28 @@
 
 估值不可避免地过高了，WeWork是个很好的例子。WeWork一月时估值高达470亿。上市前由于投资者对于价格标定非常踌躇不定，IPO被终止了。软银为了纾困付出了80亿美元。软银的损失是无法估量的。
 
-Traders are usually slick in their verbal skills.  But which branch of finance needs the strongest skills?  That must be venture capitals based in Silicon Valley.  Investment bankers must have a silver tongue in order to sell expensive risks.
+Traders are usually slick in their verbal skills.  
+Dealmakers have smooth mouth. But which branch of finance industry has the slickest ones? They both have a strong claim. But the venture capital in silicon valley have stronger. 
+But which branch of finance needs the strongest skills?  That must be venture capitals based in Silicon Valley.  Investment bankers must have a silver tongue in order to sell expensive risks.
+Dealmakers who sell such extravagant dream must have silver tongue. 
 
-They are always fond of talking about some fashionable words, such as "vanity index" (the ratio of the company to the valuation) and "product-market matching degree" (the matching degree between the company's products and the market).
+They are always fond of talking about some fashionable words, such as 
+"vanity index"
+"vainty metrics"
+(the ratio of the company to the valuation) 
+the metric that 
+and "product-market matching degree" (the matching degree between the company's products and the market).
 
 One topic that will surely open their conversation is the influx of capital into specifications.  Venture capital used to be a small fishing boat fishing on a rich lake.  Now many fishing boats are fishing.
 
 Today's technology companies have stayed in the private sector longer than before, partly because of the influx of capital.  Because the growth of the company may have stopped after the listing, such panic has prompted people to invest in the early stages of the company and the unlisted stage.  On the other hand, because the company does not need so much capital, the balance of power is shifting from capital supply to entrepreneurs.
 
+Perhaps a more important shift than the fall in demand for capital has been a steady rise in its supply. 
+The secular slump in long-term interest rates, caused in part by abundant savings, was given an extra shove after the financial crisis by centeral bank's easy-money policies. 
+
+By the time a tech startup goes public, its days of supercharged revenue growth may be over. This fear only fuels desperation to get in on the act sooner. 
+
 The valuation is inevitably too high, WeWork is a good example.  WeWork was valued at 47 billion yuan in January.  Before the IPO, the IPO was terminated because investors were very hesitant about pricing.  Softbank paid $8 billion for the rescue.  Softbank's losses are incalculable.
+The damage done by Softbank is uncalculatable. 
+
+There is growing sense that capital is being wasted. 
