@@ -8,8 +8,8 @@
 | dispensation      | 豁免   |      |
 | steep competition |        |      |
 | Formidable        |        |      |
-|                   |        |      |
-|                   |        |      |
+| Leverage          |        |      |
+| scratch           |        |      |
 |                   |        |      |
 |                   |        |      |
 |                   |        |      |
